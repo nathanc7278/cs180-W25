@@ -24,6 +24,7 @@ $ G = (v, E) $ where $v = \{a,b,c,d\}$ and $E = \{(b,c),(b,a),(b,d)\}$
         style b fill:#947
         style c fill:#947
         style d fill:#947
+        undirected
 ```
 
 A `simple path` does not repeat any vertices or edges. 
@@ -40,6 +41,7 @@ A `simple path` does not repeat any vertices or edges.
         style c fill:#947
         style d fill:#947
         style e fill:#947
+        undirected
 ```
 
 * $a,b,c,d$
@@ -65,6 +67,7 @@ There are two techniques to searching graphs. `BFS`, breadth first search, and `
         style c fill:#469
         style d fill:#469
         style e fill:#469
+        undirected
 ```
 
 To do a BFS, we visit vertices in layers. 
@@ -93,6 +96,7 @@ Every vertex checks its link to the previous layer. The runtime $ = 2e = O(E)$
         style d fill:#469
         style e fill:#469
         style f fill:#469
+        undirected
 ```
 
 To do a DFS, we visit vertices down to a dead end and then backtrack while looking for more branches in the path.
@@ -178,6 +182,7 @@ Let's go back to the example used for BFS:
         style c fill:#469
         style d fill:#469
         style e fill:#469
+        undirected
 ```
 
 For BFS, we use a `FIFO` first-in-first-out data structure.
@@ -196,6 +201,7 @@ For BFS, we use a `FIFO` first-in-first-out data structure.
         style c fill:#036
         style d fill:#036
         style e fill:#036
+        undirected
 ```
 
 For DFS, we use a `FILO` first-in-last-out data structure.
@@ -219,6 +225,7 @@ For DFS, we use a `FILO` first-in-last-out data structure.
         style c fill:#036
         style d fill:#036
         style e fill:#036
+        undirected
 ```
 
 `Length` is the number of edges from one vertex to another.

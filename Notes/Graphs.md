@@ -201,7 +201,6 @@ For BFS, we use a `FIFO` first-in-first-out data structure.
         style c fill:#036
         style d fill:#036
         style e fill:#036
-        undirected
 ```
 
 For DFS, we use a `FILO` first-in-last-out data structure.
@@ -225,7 +224,6 @@ For DFS, we use a `FILO` first-in-last-out data structure.
         style c fill:#036
         style d fill:#036
         style e fill:#036
-        undirected
 ```
 
 `Length` is the number of edges from one vertex to another.

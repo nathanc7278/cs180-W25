@@ -16,7 +16,7 @@ There are many types of graphs:
 $ G = (v, E) $ where $v = \{a,b,c,d\}$ and $E = \{(b,c),(b,a),(b,d)\}$
 
 ```mermaid
-    graph LR
+    flowchart LR
         a@{shape: circle} --- b
         b@{shape: circle} --- c@{shape: circle}
         b --- d@{shape: circle}

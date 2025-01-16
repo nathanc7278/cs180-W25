@@ -315,3 +315,21 @@ Additionally there is $\Omega (n)$ for best case scenarios:
 $$ f(n) = \Omega (g(n))\newline
 \exists \text{ constant }c\text{ and }n_0 \mid f(n) \geq cg(n), n \ge n_0
 $$
+
+### Time Complexities in Ascending Order of Growth:
+
+`O(1)`
+
+`O(log(N))` 
+
+`O(N)`
+
+`O(N^2)`
+
+`O(N^3)`
+
+`O(N^k)`
+
+`O(2^N)`
+
+`O(N!)`

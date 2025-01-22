@@ -288,3 +288,134 @@ $j$ could be at either level $j$ or any lower levels because some vertices are c
 Example: A triangle formed by $a$, $b$, $c$. If $a$ is the starting point, $b$ and $c$ are both on level 1, eventhough we may travel from $a \rightarrow b \rightarrow c$ to reach $c$. A straight line is the example of them descending levels after every edge.
 
 However, since $x$ is at level $i$, which is a different number from $j$, and $x$ cannot be in multiple levels at the same time, there must be no shorter path of length $j$ from $a$ to $x$.
+
+## Topological Sorting
+
+`topological sorting` is an ordering with vertices such that the edges follow the precedence relationship.
+
+```mermaid
+    graph TB
+        a ---> b
+        b ---> d
+        a ---> c
+        style a fill:#089
+        style b fill:#089
+        style c fill:#089
+        style d fill:#089
+```
+
+Vertices represent tasks. Edges represent the precedence relationship. Example: `(a, b)` means that `a` has to be done before `b`.
+
+The following are correct topological orderings:
+
+* `a b d c`
+* `a b c d`
+
+```mermaid
+    graph LR
+        a ---> b
+        b ---> c
+        c ---> a
+        style a fill:#089
+        style b fill:#089
+        style c fill:#089
+```
+
+In this graph, we say that `b` is adjacent to `a` but `a` is not adjacent to `b` because it is directed. `Cycles` do not have topological ordering. We denote this triangular graph as `C3`, a cycle with length 3.
+
+In an undirected graph: `degree` of a vertex is the number of edges that it is connected to.
+
+In a directed graph:
+
+* `in-degree` of a vertex is the number of incoming edges.
+* `out-degree` of a vertex is the number of outward edges.
+
+A vertex with in-deg = 0 is a `source`.
+
+A vertex with out-deg = 0 is `sink`.
+
+`DAG` is a directed acyclic graph. DAGs must have at least one source.
+
+### Solution to Determining the Topological Ordering of a DAG:
+
+```mermaid
+    graph TB
+        a ---> b
+        b ---> d
+        a ---> c
+        style a fill:#089
+        style b fill:#089
+        style c fill:#089
+        style d fill:#089
+```
+
+1. Calculate all indegrees. `O(e)`
+2. if in-deg = 0, it is a source. `O(n)`
+3. Find a source. `O(1)`
+4. Output source. `O(1)`
+5. Decrement in-deg from vertices that connect to the deleted source. For the whole algorithm this takes `O(e)`
+
+Runtime = `O(n + e)`
+
+### 2-coloring
+
+a graph is `2-colorable` if no adjacent vertices have the same color.
+
+```mermaid
+    graph LR
+        undirected
+        a --- b
+        b --- c
+        c --- d
+        a --- d
+        c --- e
+        style a fill:#900
+        style b fill:#090
+        style c fill:#900
+        style d fill:#090
+        style e fill:#090
+```
+
+graphs that contain odd length cycles are not 2-colorable
+
+```mermaid
+    graph LR
+        undirected
+        a --- b
+        b --- c
+        c --- a
+        
+        style a fill:#900
+        style b fill:#090
+```
+
+If we seperae the vertices into their colored groups, there should be no edges that connect with vertices of the same group.
+
+To check if a whole graph is connected in an undirected graph:
+
+```mermaid
+    graph LR
+        undirected
+        a --- b
+        c --- d
+        d --- e
+        e --- f
+        f --- c
+        style a fill:#049
+        style b fill:#049
+        style c fill:#049
+        style d fill:#049
+        style e fill:#049
+        style f fill:#049
+
+```
+
+1. Perform BFS `O(E)`
+2. Count number of vertices that were seen. If number of vertices is less than `n`, then the graph is not completely connected.
+
+In a directed graph: 
+
+It is considered `doubly connected` if all pairs of vertices have a path a to b and b to a. 
+
+If $c_1$ and $c_2$ are doubly connected partitions of a graph, there is no $X$ that connectes a to b and b to a. If there is a $X$ that is contained in both $c_1$ and $c_2$ then that means both sets are doubly connected. Therefore these two sets are not partitions. So $c_1$ and $c_2$ must be either disjoint or the same graph.
+

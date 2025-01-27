@@ -68,7 +68,7 @@ To run the algorithm, we need to sort the it in ascending finish times `O(nlogn)
 ```
     for n elements in the sorted finish times:
         if s_{i+1} > f_i
-            output f_i+1
+            output f_{i+1}
 ```
 
 This runs in `O(n)` time.

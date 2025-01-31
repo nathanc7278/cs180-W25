@@ -215,6 +215,6 @@ Mathematically if `m` is greater than or equal to `(n^2)/(logn)` the array imple
 
 `spanning tree` a tree that touches every vertex. To find a simple spanning tree, just do BFS.
 
-`minimum spanning tree (MST)` is a spanning tree with the smallest weights
+`minimum spanning tree (MST)` is a spanning tree with the smallest sum of weights
 
 `MST Theorem` there exists an edge `e_min`, that is the lowest weight between any two partitions within the graph for a MST.

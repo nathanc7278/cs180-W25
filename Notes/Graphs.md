@@ -241,7 +241,7 @@ For DFS, we use a `FILO` first-in-last-out data structure.
 
 * this is denoted as `dist(a,x)` where `a` and `x` are vertices.
 
-Prove: dist($a$,$x$) = level of $x$
+Prove: dist($a,x$) = level of $x$
 
 * we need to prove that there is a path of length $i$ from $a$ to $x$.
 * we need to prove that there is no shorter path, length $j$ from $a$ to $x$

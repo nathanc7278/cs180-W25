@@ -128,7 +128,9 @@ It will take $O(n)$ to see if a specific vertex is in an adjacency list. For thi
 
 We can also use matrices to model which vertices are connected:
 
-Undirected graphs' matrices: $\begin{array}{rcl} &\color{white}\begin{array}{c}a & b & c & d & e & f\end{array}\\
+Undirected graphs' matrices: 
+
+$$\begin{array}{rcl} &\color{white}\begin{array}{c}a & b & c & d & e & f\end{array}\\
 \color{white}\begin{matrix} a \\ b \\ c \\ d \\ e \\ f \end{matrix}\color{black}\hspace{-1em}
 &\begin{pmatrix}
 1&1&1&1&0&0\\
@@ -139,7 +141,9 @@ Undirected graphs' matrices: $\begin{array}{rcl} &\color{white}\begin{array}{c}a
 0&0&0&0&1&1\\
 \end{pmatrix} 
 \end{array}
-$ are always symmetric because of the nature how pairs of vertices will have the same edge.
+$$ 
+
+are always symmetric because of the nature how pairs of vertices will have the same edge.
 
 Directed graphs' matrices: $\begin{array}{rcl} &\color{white}\begin{array}{c}a & b\end{array}\\
 \color{white}\begin{matrix} a \\ b\end{matrix}\color{black}\hspace{-1em}

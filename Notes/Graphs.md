@@ -145,14 +145,18 @@ $$
 
 are always symmetric because of the nature how pairs of vertices will have the same edge.
 
-Directed graphs' matrices: $\begin{array}{rcl} &\color{white}\begin{array}{c}a & b\end{array}\\
+Directed graphs' matrices: 
+$$
+\begin{array}{rcl} &\color{white}\begin{array}{c}a & b\end{array}\\
 \color{white}\begin{matrix} a \\ b\end{matrix}\color{black}\hspace{-1em}
 &\begin{pmatrix}
 1&1\\
 0\\
 \end{pmatrix} 
 \end{array}
-$ may not be symmetric. In this example, $a \rightarrow b$, the source node is represented by the matrix's rows and the target node is represented with the columns.
+$$
+
+may not be symmetric. In this example, $a \rightarrow b$, the source node is represented by the matrix's rows and the target node is represented with the columns.
 
 ### Example:
 

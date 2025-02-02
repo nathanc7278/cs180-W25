@@ -281,7 +281,7 @@ $$
 \exists \text{ path of length } i \text{ between }x\text{ and }a
 $$
 
-By Contradition: Assume there is a shorter path of length $j$
+By Contradition: Assume there is a shorter path of length $j$ at level $i$.
 
 | Level | possible path length |
 | --- | --- |

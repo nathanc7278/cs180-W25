@@ -428,3 +428,430 @@ It is considered `doubly connected` if all pairs of vertices have a path a to b 
 
 If $c_1$ and $c_2$ are doubly connected partitions of a graph, there is no $X$ that connectes a to b and b to a. If there is a $X$ that is contained in both $c_1$ and $c_2$ then that means both sets are doubly connected. Therefore these two sets are not partitions. So $c_1$ and $c_2$ must be either disjoint or the same graph.
 
+## Dijkstra's Shortest Path Algorithm
+
+`weighted graph` the distance from a node `s` to node `t` is measured by the weights of the graph instead of the number of edges from `s` to `t`.
+
+```mermaid
+    graph TB    
+        a -- 4 --- b -- 3--- d
+        a -- 1--- c --1 --- e
+        b -- 1--- e
+        undirected
+        style a fill:#080
+        style b fill:#080
+        style c fill:#080
+        style d fill:#080
+        style e fill:#080
+```
+
+* Let `a` be the starting point
+* go to adjacent nodes of visited nodes
+* fix the weight of the shortest path
+
+To do this we do the following:
+
+* Pick the minimum of temporary weights and finalize it.
+
+```mermaid
+    graph TB   
+        subgraph infinities
+            direction TB
+            i1@{label: ∞, }
+            i2@{label: ∞}
+            i3@{label: ∞}
+            i4@{label: ∞}
+        end
+        subgraph Temporaries
+            direction TB
+            t1@{label: ()}
+            t2@{label: (minimum)}
+            t3@{label: ()}
+        end
+        subgraph Finalized
+            direction TB
+            f1@{label: '[]'}
+            f2@{label: '[]'}
+        end
+        a ---> f1 ---> t2
+        a ---> f2 ---> t3 ---> i4
+        i4 ---> t2
+        a ---> f2 ---> t3 ---> t2
+        linkStyle 2 stroke: red
+        linkStyle 3 stroke: red
+        linkStyle 4 stroke: red
+        linkStyle 5 stroke: red
+        linkStyle 6 stroke: orange
+        linkStyle 7 stroke: orange
+        linkStyle 8 stroke: orange
+        style a fill:#900
+        style i1 fill:#086
+        style i2 fill:#086
+        style i3 fill:#086
+        style i4 fill:#086
+        style t1 fill:#906
+        style t2 fill:#906
+        style t3 fill:#906
+        style f1 fill:#169
+        style f2 fill:#169
+```
+
+The orange and red path are not minimum paths because all of the weights on the graph are non-negative. We pick a minimum of the temporary weights and finalize it.
+
+### Dijkstra's Algorithm with an Array Implementation:
+
+```
+    For n steps:
+        pick minimum, x         O(n)
+        move it to finalized    O(1)
+        modify neighbors of x   O(n)
+```
+
+Total runtime of this algorithm is `O(n^2)`
+
+Here is how we modify the adjacent nodes:
+
+```mermaid
+    graph TB
+    undirected
+        x@{label: 'x[3]'} --2 --> a@{label: (7) -> (5)}
+        x --9 ---> b@{label: (∞) -> 12}
+        x --11 --> c@{label: (7) no change}
+        x ---> d@{label: ()}
+        style x fill:#900
+        style a fill:#950
+        style b fill:#950
+        style c fill:#950
+        style d fill:#950
+```
+
+### Dijkstra's Algorithm with a Heap Implementation:
+
+`heap` is a binary tree structure where the nodes follow a property for each sub-tree. A `min heap` has each parent node less than or equal to its child nodes. A `max heap` has each parent node greater than or equal to its child nodes. The smallest value of a min heap is always at the root.
+
+
+```mermaid
+    graph TB
+    undirected
+        subgraph a[min heap]
+            direction TB
+            2 --> 4 --> 6
+            4 --> 8 --> 12
+            2 --> 5
+            style 2 fill:#064
+            style 4 fill:#064
+            style 6 fill:#064
+            style 8 fill:#064
+            style 12 fill:#064
+            style 5 fill:#064
+        end
+```
+
+This allows us to access the minimum value of a set of elements in `O(1)` time. When we extract a node, it takes at most `O(logn)` time to fix the tree. The function to fix the tree if it is out of order is `sift up` and `sift down`. We can build the heap using `heapify`.
+
+Dijkstra's algorithm modifies through at most `m` edges time.  So it takes a total run time of `O(mlogn)` when we use a heap instead of arrays.
+
+**Key Note** is it better to have `O(mlogn)` or `O(n^2)`
+
+It depends. If the graph is dense, having an array implementation is better, but if the graph is sparse, a heap implementation is better.
+
+$$
+\begin{align*}
+m\text{log}n &\ge n^2 \\
+m &\ge \frac{n^2}{\text{log}n}
+\end{align*}
+$$
+
+Mathematically if `m` is greater than or equal to `(n^2)/(logn)` the array implementation is better.
+
+## Spanning Trees
+
+`spanning tree` a tree that touches every vertex. To find a simple spanning tree, just do BFS.
+
+`minimum spanning tree (MST)` is a spanning tree with the smallest sum of weights
+
+`crossing edge` is an edge between two partitions or `cuts` in the graph.
+
+`MST Theorem` there exists an edge `e_min`, that is the lowest weight between any two partition, within the graph for a MST.
+
+### Cut Property Proof:
+
+Suppose that the minimum crossing edge `e` was not in the MST.
+
+* Adding `e` to the MST creates a cycle
+* Some other edge `f` must also be a crossing edge
+* Removing `f` and adding `e` would reasult in a lower weight spanning tree.
+* Contradiction
+
+## Prim's MST Algorithm
+
+```mermaid
+    graph LR
+        subgraph Right
+            2@{shape: circle, label: " "}
+            3@{shape: circle, label: " "}
+            4@{shape: circle, label: " "}
+            5@{shape: circle, label: "v2"}
+        end
+        subgraph Left
+            1@{shape: circle, label: "v1"}
+        end
+        1 -- e_min --- 5
+        1 --- 2
+        style 1 fill:#908
+        style 2 fill:#908
+        style 3 fill:#908
+        style 4 fill:#908
+        style 5 fill:#908
+```
+
+* Arbitrarily put a vertex in the left partition.
+* the `degree` of v1 is the number crossing edges from v1 to the right partition.
+* put `e_min` in the MST
+
+```mermaid
+    graph LR
+        subgraph Right
+            2@{shape: circle, label: "6"}
+            3@{shape: circle, label: "2"}
+            4@{shape: circle, label: "5"}
+            
+        end
+        subgraph Left
+            direction TB
+            1@{shape: circle, label: "v1"}
+            5@{shape: circle, label: "v2"}
+        end
+        1 --- 5
+        5 -- e_min = 2 --- 3
+        3 --6 --- Left
+        3 --9 --- Left
+        3 --12 --- Left
+        style 1 fill:#908
+        style 2 fill:#908
+        style 3 fill:#908
+        style 4 fill:#908
+        style 5 fill:#908
+```
+
+Algorithm:
+
+```
+    for i vertices in n-1:
+        pick right vertex of e_min and put it in left
+```
+
+Runtime Analysis:
+
+* It takes `O(n)` to look at all values on the right and to pick the minimum
+* It takes `O(n)` to update the minimum values on the right side
+* There are `n-1` steps
+* Total Runtime for Array Implementation = `O(n^2)`
+
+Similar to Dijkstra's Shortest Path, we can use a heap implementation to get `O(mlogn)`.
+
+## Kruskal's MST Algorithm
+
+Sort the edges in ascending order. `e_1` is the edge with lowest weight and `e_m` is the edge with greatest weight. This takes `O(mlogm)` time.
+
+Kruskal's Algorithm looks at the smallest edge and creates bipartitions between one of `e_1`'s vertices and the rest of the vertices. We add this edge to the MST and look at the next lowest edge. For isolated edges, this works, but once we see a cycle, there is a problem with adding the edge to the MST.
+
+```mermaid
+    graph LR
+        subgraph Right
+            7@{shape: circle, label: " "}
+            8@{shape: circle, label: " "}
+            9@{shape: circle, label: " "}
+        end
+        subgraph Left
+            1@{shape: circle, label: " "}
+            2@{shape: circle, label: " "}
+            3@{shape: circle, label: " "}
+            4@{shape: circle, label: " "}
+            5@{shape: circle, label: " "}
+            6@{shape: circle, label: " "}
+        end
+        1 --- 2
+        2 --- 3
+        2 --- 4
+        5 --- 6
+        7 --- 8 --- 9
+        style 1 fill:#089
+        style 2 fill:#089
+        style 3 fill:#089
+        style 4 fill:#089
+        style 5 fill:#089
+        style 6 fill:#089
+        style 7 fill:#089
+        style 8 fill:#089
+        style 9 fill:#089
+        4 -- ok --- 7
+```
+
+```mermaid
+    graph TB
+        subgraph Right
+            8@{shape: circle, label: " "}
+            9@{shape: circle, label: " "}
+        end
+        subgraph Left
+            1@{shape: circle, label: " "}
+            2@{shape: circle, label: " "}
+            3@{shape: circle, label: " "}
+            4@{shape: circle, label: " "}
+            5@{shape: circle, label: " "}
+            6@{shape: circle, label: " "}
+            7@{shape: circle, label: " "}
+        end
+        1 --- 2
+        2 --- 3
+        2 --- 4
+        5 --- 6
+        7 --- 8 --- 9
+        style 1 fill:#089
+        style 2 fill:#089
+        style 3 fill:#089
+        style 4 fill:#089
+        style 5 fill:#089
+        style 6 fill:#089
+        style 7 fill:#089
+        style 8 fill:#089
+        style 9 fill:#089
+        7 -- not ok --- 9
+        linkStyle 6 stroke: red
+```
+
+## Union-Find Data Structure
+
+$$
+\begin{align*}
+S_1 &=\{4, 6, 7\}\\
+S_2 &=\{5\}\\
+\end{align*}
+$$
+
+Given two numbers, the `find` operation returns whether they are in the same set.
+
+Given two sets, the `union` operation puts them in the same set.
+
+Our sets can be represented by:
+
+```mermaid
+    graph LR
+        subgraph " "
+            direction BT
+            5@{shape: circle}
+        end
+        subgraph " "
+            direction BT
+            7@{shape: circle} --> 6@{shape: circle} --> 4@{shape: circle}
+        end
+        style 5 fill:#387
+        style 4 fill:#387   
+        style 6 fill:#387
+        style 7 fill:#387
+        4 ---> 5
+        linkStyle 2 stroke: red
+```
+
+`find` traverse each element to root `O(n)` and returns the root
+
+`union` point the head of the one root to the tail of another `O(1)`
+
+This takes too much time to `find` if an element is in the tree. Consider the following:
+
+```mermaid
+    graph LR
+        subgraph " "
+            direction BT
+            5@{shape: circle}
+        end
+        subgraph " "
+            direction BT
+            6@{shape: circle} --> 4@{shape: circle}
+            7@{shape: circle} --> 4
+        end
+        style 5 fill:#387
+        style 4 fill:#387   
+        style 6 fill:#387
+        style 7 fill:#387
+        4 ---> 5
+        7 ---> 5
+        6 ---> 5
+        linkStyle 2 stroke: red
+        linkStyle 3 stroke: red
+        linkStyle 4 stroke: red
+```
+
+`find` traverse each element to root `O(1)` and returns the root
+
+`union` points each element to the root of the other tree `O(n)`
+
+This takes too much time to `union` two trees. 
+
+Instead we assign smaller tree to the root of the bigger tree.
+
+```mermaid
+    graph LR
+        subgraph " "
+            direction BT
+            5@{shape: circle}
+        end
+        subgraph " "
+            direction BT
+            6@{shape: circle} --> 4@{shape: circle}
+            7@{shape: circle} --> 4
+        end
+        style 5 fill:#387
+        style 4 fill:#387   
+        style 6 fill:#387
+        style 7 fill:#387
+        5 ---> 4
+        linkStyle 2 stroke: red
+```
+
+`union` takes `O(1)` because it points the root of the smaller tree to the root of the bigger tree in one step. 
+
+`find` takes `O(logn)` = `O(h)`, where h is the height of the tree, because the length of the tree grows at most by 1 layer each time a union is performed. The size of the tree doubles every union. The longest path from any child to the root node is `O(logn)`
+
+### Using Union-Find in Kruskal's ALgorithm
+
+```mermaid
+    graph TB
+        subgraph Graph
+            1@{shape: circle, label: "a"}
+            2@{shape: circle, label: "b"}
+            3@{shape: circle, label: "c"}
+            4@{shape: circle, label: "d"}
+            5@{shape: circle, label: "e"}
+        end
+        1 --- 2
+        2 --- 3
+        3 --- 4
+        2 --- 5
+        2 -.- 4
+
+        style 1 fill:#930
+        style 2 fill:#930
+        style 3 fill:#930
+        style 4 fill:#930
+        style 5 fill:#930
+        linkStyle 4 stroke: red
+```
+
+```
+    Tree of Union-Find
+             b
+           / \ \
+          a   c e
+             /
+            d
+```
+
+* Sort the edges with minimum edge first
+* if Find(i) != Find(j) for the two vertices in the edge:
+    * add the edge to the MST
+
+This takes `m` steps to look at each edge, and it takes `logm` to do the Find operation. 
+
+Total runtime = `O(mlogm)`

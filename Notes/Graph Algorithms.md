@@ -624,9 +624,9 @@ Suppose that the minimum crossing edge `e` was not in the MST.
         end
         1 --- 5
         5 -- e_min = 2 --- 3
-        3 --6 --- Left
-        3 --9 --- Left
-        3 --12 --- Left
+        5 --6 --- Right
+        5 --9 --- Right
+        5 --12 --- Right
         style 1 fill:#908
         style 2 fill:#908
         style 3 fill:#908

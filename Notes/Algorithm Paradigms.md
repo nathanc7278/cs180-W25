@@ -218,7 +218,7 @@ T(1) = 1\\
 2^i = n \implies i = \log n\\
 &= 2^{\log n}T(\frac{n}{2^{\log n}}) + cn \log n\\
 &= nT(1) + cn\log n\\
-&= O(\log n)
+&= O(n \log n)
 \end{align*}
 $$
 

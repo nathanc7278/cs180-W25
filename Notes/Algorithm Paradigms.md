@@ -247,3 +247,83 @@ To solve this problem we will:
 
 * run merge sort
 * the crossing number of output is incremented by `x+1` whenever we add an element from the right side to the output. x + 1 is the number of indices on the left partition from current index to the end of the list. If there is a output from the right, that means it crosses all elements on the left side's current index to the end.
+
+## Dynamic Programming (DP)
+
+### Weighted Interval Scheduling
+
+In a weighted interval scheduling problem, we want to maximize the total weight of intervals while not picking overlapping intervals.
+
+We can do this by looking for the optimal solution from time $0$ to time $t$.
+
+```
+                  Wx
+    |         |-------| |
+              Sx      Fx
+
+    | --------------->| |
+                    t-1
+
+    | ----------------->|
+    0                   t
+```
+
+What is the best interval from $0$ to $t$? The most optimal solution can be denoted as `opt(t)`. 
+
+$$
+\begin{align*}
+&x \in \text{ solution} \implies \text{opt}(t) = \text{opt}(S_x - 1) + W_x\\
+&x \notin \text{ solution} \implies \text{opt}(t) = \text{opt}(t-1)
+\end{align*}
+$$
+
+`opt(t)` is the max of these cases and can be denoted as:
+
+$$
+\text{opt}(t) = \text{max}(\text{opt}(S_x-1) + W_x, \text{ opt}(t-1))
+$$
+
+If the problem asks for the intervals that contribute to the optimal solution, we must backtrack from the end. The optimal solution is only determined once we have found `opt(T)` where T is the total period of time we want to run the algorithm on.
+
+### Knapsack Problem
+
+Suppose we have `n` number of items, `I` each with two attributes, `S` for size, and `v`, for value. For the Knapsack problem, we want to maximize the value of items such that the items fit into the bag. We will first consider the variation where there is an infinite supply of each item.
+
+The sum of items must be less than or equal to the capacity of the knapsack such that the total value is maximized.
+
+| | $1$ | $2$ | $...$ | $S$ |
+| --- | --- | --- | ---| --- |
+| $I_1$ | $v1$ or 0|  | ... |
+| $I_2I_1$ | |  | ... | |
+| $\vdots$ | |  | ... | |
+| $I_n...I_2I_1$ | | | | final solution |
+
+The square $(I_1, 1)$ can either contain `v1` or `0` because a knapsack of size 1 can contain items with size 1 or less. If `v1` happens to be smaller than the capacity of this knapsack, we can say opt(1, 1) is `v1`.
+
+Generally, for any opt(i,j):
+
+$$
+I_i \in \text{ solution} \implies \text{opt}(i, j) = \text{opt}(i, S_j - S_i) + V_i
+$$
+
+because $S_j - S_i$ denotes the space remaining if we put $I_i$ in the knapsack.
+
+$$
+I_i \notin \text{ solution} \implies \text{opt}(i, j) = \text{opt}(i - 1, S_j)
+$$
+
+$$
+\text{opt}(t) = \text{max}(\text{opt}(i, S_j - S_i) + V_i, \text{ opt}(i - 1, S_j))
+$$
+
+For our implementation:
+
+```
+    for 1 <= i <= n
+        for 1 <= j <= S
+            do main equation
+```
+
+Time Complexity:
+
+There are `n` rows and `S` columns in the table. It takes `O(ns)`. THis is not polynomial time. We call this `pseudo polynomial` because everytime we add one to `S`, the number of rows grows by `n`. The runtime is proportional to the value of `S`, but it is exponential to the memory needed to store that value.

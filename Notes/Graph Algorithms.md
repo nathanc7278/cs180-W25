@@ -398,7 +398,7 @@ graphs that contain odd length cycles are not 2-colorable
         style b fill:#090
 ```
 
-If we seperae the vertices into their colored groups, there should be no edges that connect with vertices of the same group.
+If we seperate the vertices into their colored groups, there should be no edges that connect with vertices of the same group.
 
 To check if a whole graph is connected in an undirected graph:
 

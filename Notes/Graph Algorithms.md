@@ -13,7 +13,7 @@ There are many types of graphs:
 * `connected` graphs have all vertices on the graph connected together.
 * `not connected` graphs have at least two distinct groups of vertices that are connected independently.
 
-$ G = (v, E) $ where $v = \{a,b,c,d\}$ and $E = \{(b,c),(b,a),(b,d)\}$
+$G = (v, E)$ where $v = \{a,b,c,d\}$ and $E = \{(b,c),(b,a),(b,d)\}$
 
 ```mermaid
     flowchart LR

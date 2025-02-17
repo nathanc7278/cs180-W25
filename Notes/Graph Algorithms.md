@@ -78,7 +78,7 @@ To do a BFS, we visit vertices in layers.
 4. visit $d$ - adjacency list: $a
 5. visit $e$ - adjacency list: $c$
 
-Every vertex checks its link to the previous layer. The runtime $ = 2e = O(E)$
+Every vertex checks its link to the previous layer. The runtime $= 2e = O(E)$
 
 ## DFS, Depth First Search
 

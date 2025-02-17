@@ -113,7 +113,7 @@ To do a DFS, we visit vertices down to a dead end and then backtrack while looki
 10. visit $d$ - visited list $a, b, c, e, d, f$, no more unvisted vertices
 11. go back to $a$ - no unvisted vertices left
 
-Every visited vertex has to trace back to its previous vertex so the runtime $ = 2e = O(E)$.
+Every visited vertex has to trace back to its previous vertex so the runtime $= 2e = O(E)$.
 
 There are two ways to keep track of which vertices are connected. `Adjacency Lists` are lists with all the adjacent vertices of a vertex. There are `|v| = n` number of adjacency lists.
 

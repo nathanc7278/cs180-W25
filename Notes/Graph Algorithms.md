@@ -580,7 +580,7 @@ Suppose that the minimum crossing edge `e` was not in the MST.
 
 * Adding `e` to the MST creates a cycle
 * Some other edge `f` must also be a crossing edge
-* Removing `f` and adding `e` would reasult in a lower weight spanning tree.
+* Removing `f` and adding `e` would result in a lower weight spanning tree.
 * Contradiction
 
 ## Prim's MST Algorithm

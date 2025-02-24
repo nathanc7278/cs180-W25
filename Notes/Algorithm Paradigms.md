@@ -327,3 +327,145 @@ For our implementation:
 Time Complexity:
 
 There are `n` rows and `S` columns in the table. It takes `O(ns)`. THis is not polynomial time. We call this `pseudo polynomial` because everytime we add one to `S`, the number of rows grows by `n`. The runtime is proportional to the value of `S`, but it is exponential to the memory needed to store that value.
+
+## Dynamic Programming
+
+### Top Down Approach
+
+1) Break problem into overlapping subproblems
+2) Solve the subproblems via recursion
+    * keep track of previously solved subproblems to limit the size of the recursion tree(memoization)
+3) Combine subproblem solutions to get solution
+
+### Bottom Up Approach
+
+Replace step `2` of the top down approach with:
+
+Systematically solve subproblem using previously solved subproblems
+
+### RNA Structure Problem
+
+* Have an RNA sequence $R$ represented by a string of length $n$ over the alphabet $\{A, U, C, G\}$
+
+Example: `UACCGGUGUAAUAAAAAU`
+
+![RNA structure](./images/rna_structure.jpg)
+
+Matching: A matching on two sets $A$ and $B$ is a set of ordered pairs $(a, b)$ from $A \times B$ where:
+
+* every element $a$ contained in $A$ appears in at most one pair
+* every element $b$ contained in $B$ appears in at most one pair
+
+Def: An RNA structure on a sequence $R = r_1, r_2, ..., r_n$ is a matching $S$ between sets ${1, 2, ..., n}$ and ${1, 2, ..., n}$ satisfying:
+
+1. Correct Base Pairs: if $(i, j)$ in $S$, then: $(i,j)$ is a an element of ${(A,U), (C, A), (C, G), (G, C)}$
+
+2. No sharp turns: if $(i, j) \in S$ then $i < j - 4$
+
+3. No crossings: if $(i,j), (k,l) \in S$ then we cannot have $i < k < j < l$
+
+#### Problem Statement:
+
+Given an RNA sequence $R$, find the size of the RNA structure with maximum number of matches
+
+1st Things to Try:
+
+1. `opt(i)` = optimal solution over 1st `i` elements
+
+#### First attempt:
+
+`opt(i)` = size of the maximal RNA structure on $r_1, r_2, ..., r_i$
+
+Say we already computed `opt(1)` to `opt(i-1)` and we add $r_i$
+
+case 1: $r_1$ is unmatched:
+
+`opt(i) = opt(i-1)`
+
+case 2: $r_i$ is matched with $r_t$ for $1 \le t \lt i-4$
+
+We cannot have a pairing between the set between $r_1 - r_{t-1}$ and $r_{t+1} - r_{i-1}$
+
+The left set can be described as `opt(t-1)` but the right one cannot be described by our current optimal solution.
+
+#### Solution
+
+`opt(i, j)` = size of maximal RNA sequence on $r_i, r_{i+1}, ..., r_j$
+
+case 1: $r_j$ is unmatched:
+
+`opt(i, j) = opt(i, j-1)`
+
+case 2: $r_j$ is matched with $r_t$ for $i \le t \lt j-4$
+
+The left range of $r_t$ is `opt(i, t-1)` and the right part is `opt(t+1, j-1)`
+
+`opt(i, j) = opt(i, t-1) + 1 + opt(t+1, j-1)`
+
+Recurrence:
+
+`opt(i, j) = max(opt(i, j-1), max{from i <= t < j-4}(opt(i, t-1) + 1 + opt(t+1, j-1)))`
+
+#### Algorithm (R = r1, r2, ..., rn):
+
+```c++
+    Initialize an n by n array called opt (index starting from 1, not 0)
+    for (size = 0; size <= n; size++) {
+        for (i = 1; i <= n - size; i++) {
+            j = i + size
+            if (i >= j-4) {
+                opt[i][j] = 0
+            } else {
+                opt[i][j] = max(opt[i][j-1], max_from(i <= t < j-4)(opt[i][t-1] + 1 + opt[t+1][j-1]))
+            }
+        }
+    }
+    output opt[1][n]
+```
+
+Time complexity:
+
+* for the nested for loop, it takes `O(n^2)`
+* computing `opt[i][j]` computes for all `t` so it takes `O(n)`
+* Total time complexity = `O(n^3)`
+
+
+### Sequence Alignment
+
+Given two strings $X = x_1, x_2, ..., x_n$ and $Y= y_1, ..., y_m$
+
+Alignment: An aligmenet $S$ of strings $X = x_1, x_2, ..., x_n$ and $Y= y_1, ..., y_m$ is a matching between the sets $\{1, ..., n\}$ and $\{1, ..., m\}$ such that there is no crossing pairs
+
+Def: Let $S \ge 0$ and let $\alpha_{p, q} \ge 0$ for all symbols $p, q$.
+
+* $S$ denotes the gap penalty
+* $\alpha_{p, q}$ denotes the mismatch penalty
+
+The cost of an alignment $\delta$ between $X$ and $Y$ with respect to $(\delta, \{\alpha_{p, q}\})$ is the sum of the following penalties:
+
+1. for every unmatched elements in $X$ or $Y$, incure penalty $\delta$
+2. for every matched pair $(x_i, y_j)$ incur penalty $\alpha_{x_i, y_i}$
+
+#### Problem Statement:
+
+Given $X, Y$ and values $(\delta, \{\alpha_{p, q}\})$, find the cost of the minimum cost alignment between $X$ and $Y$
+
+Here is a special subcase: corresponds to the longest common subsequence
+
+$$
+\delta = 1
+$$ 
+
+$$
+\alpha_{p,q} = \begin{cases}
+0 if p = q \\
+\infty \text{ elsewhere}
+\end{cases}
+$$
+
+Common subproblems:
+
+* `opt(i)` = optimal over 1st `i` elements
+* `opt(i, j)` = optimal over elements `i` through `j`
+
+

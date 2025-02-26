@@ -458,13 +458,136 @@ $$
 
 $$
 \alpha_{p,q} = \begin{cases}
-0 if p = q \\
+0 \text{ if } p = q \\
 \infty \text{ elsewhere}
 \end{cases}
 $$
 
 Common subproblems:
 
+* `opt(i)` = optimal over 1st `i` elements
+* `opt(i, j)` = optimal over elements `i` through `j`
+* `opt(i, j)` = optimal over `i` elements and `j` elements
+
+Define: `opt(i, j)` = cost of min alignment on $x_1, x_2, ..., x_i$ and $y_1, y_2, ..., y_j$
+
+Goal: find `opt(n, m)`
+
+Assume we already computed `opt(j, k)` for all `(j, k)` pairs
+
+Case 1: Match $x_i$ with $y_j$
+
+$x_1, ..., x_{i-1}, x_i$
+
+$y_1, ..., y_{j-1}, y_j$
+
+`opt(i, j)` = `opt(i-1, j-1)` + $\alpha_{x_i, y_j}$
+
+Can $x_i$ be matched with $y_k$ for $k \lt j$ and $y_j$ be matched with $x_l$ for $l \lt i$?
+
+$x_1, ..., x_l,..., x_i$
+
+$y_1, ..., y_k,... y_j$
+
+No this would result in a crossing
+
+Observation: In strings $x_1, x_2, ..., x_i$ and $y_1, y_2, ..., y_j$, if $x_i$ is not matched with $y_j$, then at most one of $x_i$ or $y_j$ can be matched (otherwise we would have a crossing)
+
+Case 2: $x_i$ is unmatched
+
+$x_1, ..., x_{i-1}, x_i$
+
+$y_1, ..., y_j$
+
+`opt(i, j)` = `opt(i-1, j)` + $\delta$
+
+Case 4: $y_j$ is unmatched
+
+$x_1, ..., x_i$
+
+$y_1, ..., y_{j-1}, y_j$
+
+`opt(i, j)` = `opt(i, j-1)` + $\delta$
+
+So overall:
+
+`opt(i, j)` = `min`(`opt(i-1, j-1)` + $\alpha_{x_iy_j}$, `opt(i-1, y)` + $\delta$, `opt(i, y-1)` + $\delta$)
+
+#### Algorithm $(X = x_1...x_n, Y = y_1...y_m, \delta, \{\alpha_{pq}\})$
+
+1. Initialize and $n+1 \times m+1$ array called `opt`
+2. set `opt[0][j]` = $j\delta$ for all `j`
+3. set `opt[i][0]` = $i\delta$ for all `i`
+4. for (i=1; i<= n; i++)
+        
+    * for(j=1; j<= m; j++)
+            
+        * `opt(i, j)` = `min`(`opt(i-1, j-1)` + $\alpha_{x_iy_j}$, `opt(i-1, y)` + $\delta$, `opt(i, y-1)` + $\delta$)
+5. output `opt[n][m]`
+
+Runtime = `O(mn)`
+
+### Bellman-Ford Algorithm
+
+#### Problem Statment
+
+Given a directed weighted graph $G = (V, E)$ and two nodes $(s, t)$, find the minimum cost from $s$ to $t$. 
+
+* Allow negative weight edges
+* Disallow negative cycle
+
+`opt(v)` = shortest "known" path from $s$ to $v$
+
+Then for $v \ne s$
+
+`opt(v)` = min neighbors, $u$ of $v$(weight$(u,v)$ + `opt(u)`)
+
+This works for DAGs but no the general case.
+
+Problem: We many not have computed `opt(u)` by the time we need to compute `opt(v)`
+
+`opt(i, v)` = cost of min cost path from $S$ to $v$ that uses at most $i$ edges.
+
+`opt(i, v)` = min(min in-neighbors $u$ of $v$(weight $(u, v)$ + `opt(i-1, u)`), `opt(i-1, v)`)
+
+Question: How big does $i$ need to get bfore we're confident we've determined the minimum cost path?
+
+Observation: if no negative cycles, then there is a min cost path which is a simple path(no repeated nodes)
+
+Answer: $i = n-1$ is sufficient
+
+After $n$ edges, we'll have touched $n+1$ nodes which means there is a repeated node(cycle). Because there is no negative cycle, removing the cycle will lead to a path with fewer edges and cost at least as small as original path.
+
+#### Algorithm $(G=(V,E),s,t)$
+
+1. let $n$ = number of nodes in $G$. Assume $V = \{0, 1,..., n-1\}$
+2. Create a $n\times n$ array called `opt`
+3. set `opt[0, s]` = $0$ and `opt[0, v]` = $\infty$ for all $v\ne s$
+4. for (i = 1; i < n; i++)
+    * for $v \in V$
+        * `opt[i, v]` = min(min in-neighbors $u$ of $v$(weight $(u, v)$ + `opt(i-1, u)`), `opt(i-1, v)`)
+5. output `opt[n-1, t]`
+
+Time complexity:
+
+The for loops take 
+$$
+\begin{align*}
+O(\sum_i \sum_v (1 + \text{ in-deg}(v))) \\
+&= O(\sum_i(n+ \sum_v \text{ in-deg}(v))) \\
+&= O(\sum_i (n+m))\\
+&= O(n(n+m))
+\end{align*}
+$$
+
+#### Finding Optimal Solution (not just value)
+
+`Find-Min-Cost-Path(opt, s, t)` this is given from Bellman-Ford
+
+* Look at what letd to `opt(i, t)`'s value
+* here are the possible choices:
+    * a = `opt(i-1, t)` recurse on `Find-Min-Cost-Path(opt(i-1), s, t)`
+    * b = `opt(i-1, u)` + weight$(u,v)$ for some in-neighbor of $t$. This is the output of `Find-Min-Path(opt, i-1, s, u)` + weight $(u, t)$
 * `opt(i)` = optimal over 1st `i` elements
 * `opt(i, j)` = optimal over elements `i` through `j`
 

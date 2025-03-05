@@ -10,7 +10,7 @@ $$(n-1)+(n-2)+(n-3)+...+1$$
 
 steps which results in a $O(n^2)$ solution.
 
-Let's use a divide and conquer approach to this problem. Given `n` points with `x` and `y` values, partition the points into $\frac{1}{2}$ recursively until we get one point in each partition. This is similar to `merge sort`.
+Let's use a divide and conquer approach to this problem. Given `n` points with `x` and `y` values, partition the points into $\frac{1}{2}$ recursively using the x values of each point until we get one point in each partition. This is similar to `merge sort`.
 
 Our next step is to merge the two partitions. For any two partitions the closest pair, `Cp` can either be `Cpl` closes pair from left, `Cpr` closest pair from right, or `Cplr` closes pair from left to right.
 

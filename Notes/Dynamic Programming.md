@@ -42,36 +42,38 @@ Suppose we have `n` number of items, `I` each with two attributes, `S` for size,
 
 The sum of items must be less than or equal to the capacity of the knapsack such that the total value is maximized.
 
-| | $1$ | $2$ | $...$ | $S$ |
-| --- | --- | --- | ---| --- |
-| $I_1$ | $v1$ or 0|  | ... |
-| $I_2I_1$ | |  | ... | |
-| $\vdots$ | |  | ... | |
-| $I_n...I_2I_1$ | | | | final solution |
+Example: Knapsack of size 5. We have 3 items, `v1 = 5, w1 = 3`, `v2 = 3, w2 = 2`, `v3 = 4, w3 = 1`
 
-The square $(I_1, 1)$ can either contain `v1` or `0` because a knapsack of size 1 can contain items with size 1 or less. If `v1` happens to be smaller than the capacity of this knapsack, we can say opt(1, 1) is `v1`.
+| V | 1 | 2 | 3 | 4 | 5 |
+| --- | --- | --- | ---| --- | --- |
+| 0 | 0 | 0 | 0 | 0 | 0 |
+| 1 | 0 | 0 | 5 | 5 | 5 |
+| 2 | 0 | 3 | 5 | 5 | 8 |
+| 3 | 4 | 4 | 7 | 9 | 9 |
 
-Generally, for any opt(i,j):
+The columns represent size of the knapsack and the rows represent how many items we are considering
 
-$$
-I_i \in \text{ solution} \implies \text{opt}(i, j) = \text{opt}(i, S_j - S_i) + V_i
-$$
-
-because $S_j - S_i$ denotes the space remaining if we put $I_i$ in the knapsack.
+Generally, for any opt(num items, size):
 
 $$
-I_i \notin \text{ solution} \implies \text{opt}(i, j) = \text{opt}(i - 1, S_j)
+I_i \in \text{ solution} \implies \text{opt}(num items, size) = \text{opt}(num items - 1, size - w_{num items}) + v_{num items}
+$$
+
+because $size - w_{num items}$ denotes the space remaining if we put $I_i$ in the knapsack.
+
+$$
+I_i \notin \text{ solution} \implies \text{opt}(i, j) = \text{opt}(num items - 1, size)
 $$
 
 $$
-\text{opt}(t) = \text{max}(\text{opt}(i, S_j - S_i) + V_i, \text{ opt}(i - 1, S_j))
+\text{opt}(num items, size) = \text{max}(\text{opt}(num items - 1, size - w_{num items}) + v_{num items}, \text{ opt}(num items - 1, size))
 $$
 
 For our implementation:
 
 ```
-    for 1 <= i <= n
-        for 1 <= j <= S
+    for 1 <= num items <= n
+        for 1 <= size <= S
             do main equation
 ```
 

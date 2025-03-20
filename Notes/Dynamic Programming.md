@@ -324,6 +324,7 @@ After $n$ edges, we'll have touched $n+1$ nodes which means there is a repeated 
 Time complexity:
 
 The for loops take 
+
 $$
 \begin{align*}
 O(\sum_i \sum_v (1 + \text{ in-deg}(v))) \\

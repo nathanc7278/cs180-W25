@@ -297,7 +297,7 @@ Then for $v \ne s$
 
 This works for DAGs but no the general case.
 
-Problem: We many not have computed `opt(u)` by the time we need to compute `opt(v)`
+Problem: We may not have computed `opt(u)` by the time we need to compute `opt(v)`
 
 `opt(i, v)` = cost of min cost path from $S$ to $v$ that uses at most $i$ edges.
 

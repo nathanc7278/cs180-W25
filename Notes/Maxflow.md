@@ -66,7 +66,7 @@ The optimal solution may or may not be unique.
 
 1. $f$ is maxflow in $N$
 2. the residual network $N_f$ has no more augmenting paths
-3. $f$ is $C(s, T)$ for some cut $(S, T)$
+3. $f$ is $C(S, T)$ for some cut $(S, T)$
 
 Proof: 
 

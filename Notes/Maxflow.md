@@ -60,7 +60,7 @@ The time complexity for ford-fulkerson is `fe`, where we send `f` flow times thr
 
 ### ST-Cut
 
-The capcity of a ST-Cut is the sum of all capacities that can go from the partition containing $S$ to the partition containing $T$. Of all ST-Cuts, consider the one with the minimum capacity. Call this the `min cut`. It is the bottle neck of the graph.
+The capacity of a ST-Cut is the sum of all capacities that can go from the partition containing $S$ to the partition containing $T$. Of all ST-Cuts, consider the one with the minimum capacity. Call this the `min cut`. It is the bottle neck of the graph.
 
 The optimal solution may or may not be unique.
 
@@ -81,7 +81,7 @@ Assume $f$ is the maxflow and there is an augmented path in the residual network
 
 put all reachable nodes from $s$ on left partition and the rest of the nodes on right partition after ignoring saturated edges
 
-* then there is a cut with flow = capcity
+* then there is a cut with flow = capacity
 
 #### 3 to 1
 

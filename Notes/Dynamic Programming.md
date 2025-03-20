@@ -293,7 +293,7 @@ Given a directed weighted graph $G = (V, E)$ and two nodes $(s, t)$, find the mi
 
 Then for $v \ne s$
 
-`opt(v)` = min neighbors, $u$ of $v$(weight$(u,v)$ + `opt(u)`)
+`opt(v)` = min neighbors, $u$ of $v$ (weight $(u,v)$ + `opt(u)`)
 
 This works for DAGs but no the general case.
 

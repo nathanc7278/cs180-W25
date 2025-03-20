@@ -327,7 +327,7 @@ The for loops take
 
 $$
 \begin{align*}
-O(\sum_i \sum_v (1 + \text{ in-deg}(v))) \\
+& O(\sum_i \sum_v (1 + \text{ in-deg}(v))) \\
 &= O(\sum_i(n+ \sum_v \text{ in-deg}(v))) \\
 &= O(\sum_i (n+m))\\
 &= O(n(n+m))

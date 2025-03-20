@@ -53,7 +53,7 @@ Say we have an edge with all links that have capacity of 1 flow.
 
 * pick any path from $s$ to $t$
 * send 1 flow through this path
-* create a residual edge from that path with capcity equal to the flow that was sent
+* create a residual edge from that path with capacity equal to the flow that was sent
 * repeat until all paths are saturated
 
 The time complexity for ford-fulkerson is `fe`, where we send `f` flow times through `e` number of edges.
